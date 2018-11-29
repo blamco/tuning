@@ -3,8 +3,14 @@ import os
 import shutil
 import re
 from collections import Counter
+import sys
+
 
 def get_source():
+    if sys.argv[1]:
+        source = os.path.join(os.curdir, sys.argv[1])
+        return source
+
     for file in os.listdir(os.curdir):
         if file.endswith(".7z"):
             source = os.path.join(os.curdir, file)
@@ -59,7 +65,7 @@ def get_log_files(source):
 
 
 def print_info(data, name):
-    with open("summary.txt", "a") as f:
+    with open("{}-summary.txt".format(source.split('.')[0]), "a") as f:
         print("Top 10 {}:\n".format(name))
         f.write("Top 10 {}:\n".format(name))
         for i in data:
@@ -68,6 +74,7 @@ def print_info(data, name):
             f.write("{} {}\n".format(str(output[0]), str(output[1])))
         print("\n\n")
         f.write("\n\n")
+
 
 source = get_source().split('\\')[1]
 output = "{}\\{}".format(os.getcwd(), source.split('.')[0])

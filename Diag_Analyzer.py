@@ -59,18 +59,18 @@ def get_log_files(source):
 
 
 def print_info(data, name):
-    with open("summary.txt", "w") as f:
+    with open("summary.txt", "a") as f:
         print("Top 10 {}:\n".format(name))
         f.write("Top 10 {}:\n".format(name))
         for i in data:
             print('{0:>8}'.format(i[1]), i[0].rstrip())
             output = '{0:>8}'.format(i[1]), i[0].rstrip()
-            f.write("{}\n".format(str(output)))
+            f.write("{} {}\n".format(str(output[0]), str(output[1])))
         print("\n\n")
         f.write("\n\n")
 
 source = get_source().split('\\')[1]
-output = "{}\\Extracted".format(os.getcwd())
+output = "{}\\{}".format(os.getcwd(), source.split('.')[0])
 try:
     if not os.path.exists(output):
         os.mkdir(output)
@@ -123,5 +123,6 @@ for i in path_list:
 common_paths = Counter(path_list_scrubbed).most_common(10)
 print_info(common_paths, "Paths")
 
+#Hold screen open until Enter is pressed
 while re.match(u'\u23CE', input("Press Enter to exit:\n")):
     break

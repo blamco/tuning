@@ -4,10 +4,15 @@ AMP Tuning tools
 # Diag_analyzer.exe
 
 Usage:
-	Diag_analyzer.exe 
+
+Diag_analyzer.exe 
+	
 	- will use the first diagnostic in the directory alphabetically
-	or
-	Diag_analyzer.py Diagnostic_File.7z
+	
+or
+	
+Diag_analyzer.py Diagnostic_File.7z
+	
 	- will use the diagnostic file specified
 	
 Diag_analyzer.exe will check the provided AMP diagnostic file for sfc.exe.log files.  

@@ -1,7 +1,7 @@
 # tuning
 AMP Tuning tools
 
-Diag_analyzer.exe
+# Diag_analyzer.exe
 
 Usage:
 	Diag_analyzer.exe

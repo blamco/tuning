@@ -6,15 +6,37 @@ from collections import Counter
 import sys
 
 
+'''
+Diag_analyzer.exe v0.3
+
+Usage:
+    Diag_analyzer.exe
+    #Will use the first diagnostic in the directory alphabetically
+    or
+    Diag_analyzer.exe Diagnostic_File.7z
+    #Will use the diagnostic file specified
+
+Diag_analyzer.exe will check the provided AMP diagnostic file for sfc.exe.log files.  
+It will then create a directory with the diagnostic file name and store the log files outside of the .7z.
+Next, it will parse the logs and determine the Top 10 Processes, Files, Extensions and Paths.
+Finally, it will print that information to the screen and also to a {Diagnostic}-summary.txt file.
+'''
+
+
 def get_source():
-    if sys.argv[1]:
+    if len(sys.argv) == 2:
         source = os.path.join(os.curdir, sys.argv[1])
         return source
 
-    for file in os.listdir(os.curdir):
-        if file.endswith(".7z"):
-            source = os.path.join(os.curdir, file)
-            return source
+    elif len(sys.argv) > 2:
+        print("Usage:\nDiag_analyzer.exe\nor\nDiag_analyzer.exe path/to/diagnostic")
+        exit()
+
+    else:
+        for file in os.listdir(os.curdir):
+            if file.endswith(".7z"):
+                source = os.path.join(os.curdir, file)
+                return source
 
 
 def get_sfc_path():

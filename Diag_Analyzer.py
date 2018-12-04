@@ -7,7 +7,7 @@ import sys
 
 
 '''
-Diag_analyzer.exe v0.3
+Diag_analyzer.exe v0.4
 
 Usage:
     Diag_analyzer.exe
@@ -86,10 +86,10 @@ def get_log_files(source):
     return os.listdir(output)
 
 
-def print_info(data, name):
+def print_info(data, name, count):
     with open("{}-summary.txt".format(source.split('.')[0]), "a") as f:
-        print("Top 10 {}:\n".format(name))
-        f.write("Top 10 {}:\n".format(name))
+        print("Top {} {}:\n".format(count, name))
+        f.write("Top {} {}:\n".format(count, name))
         for i in data:
             print('{0:>8}'.format(i[1]), i[0].rstrip())
             output = '{0:>8}'.format(i[1]), i[0].rstrip()
@@ -97,6 +97,13 @@ def print_info(data, name):
         print("\n\n")
         f.write("\n\n")
 
+def print_info_to_file(data, name):
+    with open("{}-summary.txt".format(source.split('.')[0]), "a") as f:
+        f.write("All {}:\n".format(name))
+        for i in data:
+            output = '{0:>8}'.format(i[1]), i[0].rstrip()
+            f.write("{} {}\n".format(str(output[0]), str(output[1])))
+        f.write("\n\n")
 
 source = get_source().split('\\')[1]
 output = "{}\\{}".format(os.getcwd(), source.split('.')[0])
@@ -125,12 +132,12 @@ for log in log_files2:
 # Get Process information and print to screen and log
 process_list = list(map(lambda x: x.split(',')[2], data))
 common_process = Counter(process_list).most_common(10)
-print_info(common_process, "Processes")
+print_info(common_process, "Processes", 10)
 
 # Get File information and print to screen and log
 file_list = list(map(lambda x: x.split(',')[1], data))
 common_files = Counter(file_list).most_common(10)
-print_info(common_files, "Files")
+print_info(common_files, "Files", 10)
 
 # Get Extension information and print to screen and log
 extension_list = list(map(lambda x: x.split(',')[1], data))
@@ -140,7 +147,7 @@ for i in extension_list:
         x = i.split('.')[-1]
         extension_list_scrubbed.append(x)
 common_extensions = Counter(extension_list_scrubbed).most_common(10)
-print_info(common_extensions, "Extensions")
+print_info(common_extensions, "Extensions", 10)
 
 # Get Path information and print to screen and log
 path_list = list(map(lambda x: x.split(',')[1], data))
@@ -149,8 +156,12 @@ for i in path_list:
     path_only = i.split('\\')[:-1]
     path_only_merged = "\\".join(path_only)
     path_list_scrubbed.append(path_only_merged)
-common_paths = Counter(path_list_scrubbed).most_common(10)
-print_info(common_paths, "Paths")
+common_paths = Counter(path_list_scrubbed).most_common(100)
+print_info(common_paths, "Paths", 100)
+
+# Print all file scans to summary file
+all_files = Counter(file_list).most_common(100000)
+print_info_to_file(all_files, "Files")
 
 #Hold screen open until Enter is pressed
 while re.match(u'\u23CE', input("Press Enter to exit:\n")):
